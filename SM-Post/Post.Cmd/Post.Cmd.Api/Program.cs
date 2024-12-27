@@ -1,7 +1,5 @@
 using Post.Cmd.Api;
-using Post.Cmd.Api.Commands;
 using Post.Cmd.Infrastructure;
-using Post.Cmd.Infrastructure.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +7,9 @@ var configuration = builder.Configuration;
 var services = builder.Services;
 
 {
-    services.Configure<MongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)));
-
     services
         .AddInfrastructureDI()
-        .AddApiDI();
+        .AddApiDI(configuration);
 }
 
 var app = builder.Build();

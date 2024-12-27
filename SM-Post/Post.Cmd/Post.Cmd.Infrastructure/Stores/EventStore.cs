@@ -2,10 +2,13 @@
 using CQRS.Core.Events;
 using CQRS.Core.Exceptions;
 using CQRS.Core.Infrastructure;
+using CQRS.Core.Producers;
 using Post.Cmd.Domain.Aggregates;
 
 namespace Post.Cmd.Infrastructure.Stores;
-internal sealed class EventStore(IEventStoreRepository eventStoreRepository) : IEventStore
+internal sealed class EventStore(
+    IEventStoreRepository eventStoreRepository,
+    IEventProducer producer) : IEventStore
 {
     public async Task<List<EventBase>> GetEventsAsync(Guid aggregateId)
     {
@@ -42,6 +45,9 @@ internal sealed class EventStore(IEventStoreRepository eventStoreRepository) : I
             };
 
             await eventStoreRepository.SaveAsync(eventModel);
+            var topic = Environment.GetEnvironmentVariable("KAFKA_TOPIC") ?? throw new Exception(" 'KAFKA_TOPIC' not founded in envirenment vatiables");
+
+            await producer.ProduceAsync(topic, @event);
         }
     }
 }
