@@ -7,5 +7,5 @@ public record CommentAddedEvent(
     Guid CommentId,
     string Comment,
     string UserName,
-    DateTime CommentDateTime
+    DateTime Created_At
     ) : EventBase(PostId, nameof(CommentAddedEvent));

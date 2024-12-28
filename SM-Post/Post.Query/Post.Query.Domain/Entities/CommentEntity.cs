@@ -12,6 +12,7 @@ public class CommentEntity
 
     public string Comment { get; set; }
     public DateTime Created_At { get; set; }
+    public DateTime Modified_At { get; set; }
 
     public bool IsEdited { get; set; }
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.DataAccess;
+using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 
 namespace Post.Query.Infrastructure;
@@ -26,6 +27,7 @@ public static class InfrastrcutureExtension
 
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IEventHandler, Handlers.EventHandler>();
         return services;
     }
 }
