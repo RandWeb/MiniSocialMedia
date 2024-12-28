@@ -1,0 +1,12 @@
+﻿USE SocialMedia
+Go
+
+IF NOT EXISTS(SELECT name FROM sys.server_principals WHERE name = 'SMUser')
+BEGIN
+	CREATE LOGIN SMUser WITH PASSWORD = '1qaz!QAZ',DEFAULT_DATABASE = SocialMedia
+END
+
+IF NOT EXISTS (SELECT name FROM sys.server_principals WHERE name='SMUser')
+BEGIN
+	EXEC sp_adduser 'SMUser','SMUser','db_owner'
+END
