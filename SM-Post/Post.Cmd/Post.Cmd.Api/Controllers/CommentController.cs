@@ -2,6 +2,7 @@
 using CQRS.Core.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Post.Cmd.Api.Commands;
+using Post.Cmd.Api.Protocols;
 using Post.Common.Protocols;
 
 namespace Post.Cmd.Api.Controllers;
@@ -69,11 +70,11 @@ public sealed class CommentController(ILogger<CommentController> logger, IComman
     }
 
     [HttpDelete("{CommentId:guid}")]
-    public async Task<IActionResult> DeleteAsync(Guid PostId, Guid CommentId)
+    public async Task<IActionResult> DeleteAsync(Guid PostId, Guid CommentId, [FromQuery] string userName)
     {
         try
         {
-            var command = new RemoveCommentCommand { CommentId = CommentId,Id=PostId};
+            var command = new RemoveCommentCommand { CommentId = CommentId, Id = PostId, UserName = userName };
             await _commandDispatcher.SendAsync(command);
             return StatusCode(StatusCodes.Status200OK, new ResponseBase { Message = "Comment deleted from post successfully" });
         }

@@ -5,7 +5,7 @@ using Post.Query.Infrastructure.DataAccess;
 
 namespace Post.Query.Infrastructure.Repositories;
 
-internal class CommentRepository : ICommentRepository
+internal sealed class CommentRepository : ICommentRepository
 {
     private readonly DatabaseContextFactory _contextFactory;
 
@@ -29,6 +29,7 @@ internal class CommentRepository : ICommentRepository
         if (comment is null) return;
 
         context.Comments.Remove(comment);
+        _ = await context.SaveChangesAsync();
     }
 
     public async Task<CommentEntity> GetCommentByIdAsync(Guid commentId)

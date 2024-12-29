@@ -45,7 +45,7 @@ public sealed class CommandHandler(IEventSourcingHandler<PostAggregate> eventSou
     {
         var aggregate = await eventSourcing.GetByIdAsync(command.Id);
 
-        aggregate.RemovedComment(command.Id, command.UserName);
+        aggregate.RemovedComment(command.CommentId, command.UserName);
 
         await eventSourcing.SaveAsync(aggregate);
     }

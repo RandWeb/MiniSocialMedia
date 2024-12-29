@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Post.Query.Infrastructure.Consumers;
-internal class EventConsumer(
+internal sealed class EventConsumer(
     IOptions<ConsumerSettings> options,
     IEventHandler eventHandler
     ) : IEventConsumer
@@ -24,18 +24,19 @@ internal class EventConsumer(
             GroupId = _consumerSettings.GroupId,
             BootstrapServers = $"{_consumerSettings.Host}:{_consumerSettings.Port}",
             AutoOffsetReset = Enum.Parse<AutoOffsetReset>(_consumerSettings.AutoOffsetReset),
-            EnableAutoCommit = false,
+            EnableAutoCommit = _consumerSettings.EnableAutoCommit,
             AllowAutoCreateTopics = _consumerSettings.AllowAutoCreateTopics
         })
             .SetKeyDeserializer(Deserializers.Utf8)
-            .SetValueDeserializer(Deserializers.Utf8).Build();
+            .SetValueDeserializer(Deserializers.Utf8)
+            .Build();
 
         consumer.Subscribe(topic);
 
         while (true)
         {
             var consumeResult = consumer.Consume();
-            if (consumeResult?.Message is not null) continue;
+            if (consumeResult?.Message is null) continue;
             JsonSerializerOptions jsonSerializerOptions = new()
             {
                 Converters = { new EventJsonConverter() },

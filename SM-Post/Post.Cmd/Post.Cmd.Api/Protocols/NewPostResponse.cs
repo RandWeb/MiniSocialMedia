@@ -2,7 +2,7 @@
 
 namespace Post.Cmd.Api.Protocols;
 
-public class NewPostResponse : ResponseBase
+public record NewPostResponse : ResponseBase
 {
     public Guid Id { get; set; }
 }

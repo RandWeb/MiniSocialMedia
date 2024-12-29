@@ -1,18 +1,20 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace CQRS.Core.Events;
 
 public class EventModel
 {
     [BsonId]
-    [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-    public string Id { get; init; }
-    public DateTime TimeStamp { get; init; }
-    public Guid AggregateIdentifier { get; init; }
-    public string AggregateType { get; init; }
-    public string EventType { get; init; }
-    public EventBase EventData { get; init; }
-    public int Version { get; init; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string Id { get; set; }
+    public DateTime TimeStamp { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
+    public Guid AggregateIdentifier { get; set; }
+    public string AggregateType { get; set; }
+    public string EventType { get; set; }
+    public EventBase EventData { get; set; }
+    public int Version { get; set; }
 
     public EventModel()
     {

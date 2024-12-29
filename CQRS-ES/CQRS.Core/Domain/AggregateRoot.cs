@@ -1,5 +1,4 @@
 ﻿using CQRS.Core.Events;
-using Microsoft.Extensions.Logging;
 
 namespace CQRS.Core.Domain;
 public abstract class AggregateRoot
@@ -9,7 +8,11 @@ public abstract class AggregateRoot
     protected Guid _id;
 
 
-    public Guid Id => _id;
+    public Guid Id
+    {
+        get { return _id; }
+    }
+
 
     public int Version { get; set; } = -1;
 

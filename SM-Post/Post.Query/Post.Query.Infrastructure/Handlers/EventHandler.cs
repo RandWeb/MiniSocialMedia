@@ -59,7 +59,7 @@ internal sealed class EventHandler : IEventHandler
     }
     public async Task On(CommentRemovedEvent @event)
     {
-        await _commentRepository.RemoveAsync(@event.PostId);
+        await _commentRepository.RemoveAsync(@event.CommentId);
     }
     public async Task On(CommentUpdatedEvent @event)
     {

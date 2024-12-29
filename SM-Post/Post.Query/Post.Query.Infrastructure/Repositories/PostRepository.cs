@@ -2,10 +2,9 @@
 using Post.Query.Domain.Entities;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.DataAccess;
-using System.Collections.Generic;
 
 namespace Post.Query.Infrastructure.Repositories;
-internal class PostRepository : IPostRepository
+internal sealed class PostRepository : IPostRepository
 {
     private readonly DatabaseContextFactory _contextFactory;
 
@@ -33,12 +32,20 @@ internal class PostRepository : IPostRepository
         _ = await context.SaveChangesAsync();
     }
 
-    public async Task<PostEntity> GetPostByIdAsync(Guid postId)
+    public async Task<PostEntity?> GetPostByIdAsync(Guid postId)
     {
-        using var context = _contextFactory.CreateDbContext();
-        return await context.Posts
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(q => q.PostId == postId);
+        try
+        {
+            using var context = _contextFactory.CreateDbContext();
+            return await context.Posts
+                .Include(p => p.Comments)
+                .FirstOrDefaultAsync(q => q.PostId.Equals(postId));
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
     public async Task<List<PostEntity>> GetPostsAsync()

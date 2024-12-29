@@ -1,6 +1,5 @@
 ﻿using CQRS.Core.Domain;
 using Post.Common.Events;
-using System.ComponentModel.Design;
 
 namespace Post.Cmd.Domain.Aggregates;
 public sealed class PostAggregate : AggregateRoot
@@ -44,6 +43,7 @@ public sealed class PostAggregate : AggregateRoot
     public void Apply(MessageUpdatedEvent @event)
     {
         _id = @event.Id;
+
     }
 
     public void LikePost()
@@ -116,7 +116,7 @@ public sealed class PostAggregate : AggregateRoot
         }
 
 
-        if (_comments[commentId].Item2.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
+        if (!_comments[commentId].Item2.Equals(userName, StringComparison.CurrentCultureIgnoreCase))
         {
             throw new InvalidOperationException($"You are not allowed to remove a comment that was made by another user!");
         }
@@ -139,7 +139,7 @@ public sealed class PostAggregate : AggregateRoot
             throw new InvalidOperationException("you cannot delete an inactive post");
         }
 
-        if (Author.Equals(username,StringComparison.InvariantCultureIgnoreCase))
+        if (Author.Equals(username, StringComparison.InvariantCultureIgnoreCase))
         {
             throw new InvalidOperationException($"You not allowed to delete a post that made was someone else");
         }

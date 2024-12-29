@@ -2,5 +2,5 @@
 
 namespace Post.Cmd.Api.Commands;
 
-public record LikePostCommand(Guid PostId) : CommandBase;
+public record LikePostCommand(Guid PostId) : CommandBase(PostId);
 

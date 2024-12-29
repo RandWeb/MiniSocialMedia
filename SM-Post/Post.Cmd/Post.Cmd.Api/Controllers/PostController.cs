@@ -21,7 +21,7 @@ public class PostController(ICommandDispatcher commandDispatcher, ILogger<PostCo
         {
             command.Id = Guid.NewGuid();
             await _commandDispatcher.SendAsync(command);
-            return StatusCode(StatusCodes.Status201Created, new NewPostResponse { Message = "New post creation request completed successfully" });
+            return StatusCode(StatusCodes.Status201Created, new NewPostResponse {Id = command.Id, Message = "New post creation request completed successfully" });
         }
         catch (InvalidOperationException exception)
         {
@@ -64,7 +64,7 @@ public class PostController(ICommandDispatcher commandDispatcher, ILogger<PostCo
     }
 
 
-    [HttpDelete("{id}/like")]
+    [HttpPut("{id}/like")]
     public async Task<IActionResult> PostLikeAsync(Guid id)
     {
         try
@@ -92,7 +92,7 @@ public class PostController(ICommandDispatcher commandDispatcher, ILogger<PostCo
     }
 
     [HttpDelete("{PostId:guid}")]
-    public async Task<IActionResult> RemovePostAsync([FromRoute] Guid PostId,[FromBody] RemovePostCommand command)
+    public async Task<IActionResult> RemovePostAsync([FromRoute] Guid PostId,[FromQuery] RemovePostCommand command)
     {
         try
         {
