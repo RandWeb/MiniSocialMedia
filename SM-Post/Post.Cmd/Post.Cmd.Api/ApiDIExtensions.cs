@@ -1,7 +1,10 @@
-﻿using CQRS.Core.Infrastructure;
+﻿using CQRS.Core.Events;
+using CQRS.Core.Infrastructure;
+using MongoDB.Bson.Serialization;
 using Post.Cmd.Api.Commands;
 using Post.Cmd.Infrastructure.Dispatchers;
 using Post.Cmd.Infrastructure.Settings;
+using Post.Common.Events;
 
 namespace Post.Cmd.Api;
 
@@ -22,6 +25,15 @@ internal static class ApiDIExtensions
         var commandHandler = services.BuildServiceProvider().GetService<ICommandHandler>();
 
         CommandDispatcher dispatcher = new();
+
+        BsonClassMap.RegisterClassMap<EventBase>();
+        BsonClassMap.RegisterClassMap<PostCreatedEvent>();
+        BsonClassMap.RegisterClassMap<MessageUpdatedEvent>();
+        BsonClassMap.RegisterClassMap<PostLikedEvent>();
+        BsonClassMap.RegisterClassMap<PostRemovedEvent>();
+        BsonClassMap.RegisterClassMap<CommentAddedEvent>();
+        BsonClassMap.RegisterClassMap<CommentUpdatedEvent>();
+        BsonClassMap.RegisterClassMap<CommentRemovedEvent>();
 
         dispatcher.RegisterHandler<AddPostCommand>(commandHandler.HandleAsync);
         dispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandleAsync);

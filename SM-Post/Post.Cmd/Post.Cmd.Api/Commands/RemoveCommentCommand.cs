@@ -2,5 +2,9 @@
 
 namespace Post.Cmd.Api.Commands;
 
-public record RemoveCommentCommand(Guid CommentId, string UserName) : CommandBase;
+public record RemoveCommentCommand : CommandBase
+{
+    public Guid CommentId { get; set; }
+    public string UserName { get; set; }
+}
 

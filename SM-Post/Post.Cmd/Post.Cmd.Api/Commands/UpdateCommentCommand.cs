@@ -2,5 +2,11 @@
 
 namespace Post.Cmd.Api.Commands;
 
-public record UpdateCommentCommand(Guid CommentId, string Comment, string UserName) : CommandBase;
+public record UpdateCommentCommand : CommandBase
+{
+
+    public Guid CommentId { get; set; }
+    public string Comment { get; set; }
+    public string UserName { get; set; }
+}
 
