@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.DataAccess;
+using Post.Query.Infrastructure.Dispatchers;
 using Post.Query.Infrastructure.Handlers;
 using Post.Query.Infrastructure.Repositories;
 using Post.Query.Infrastructure.Settings;
@@ -46,6 +47,12 @@ public static class InfrastrcutureExtension
         var dataContext = services.BuildServiceProvider().GetRequiredService<DatabaseContext>();
 
         dataContext.Database.EnsureCreated();
+        return services;
+    }
+
+    private static IServiceCollection SetupHandlers(this IServiceCollection services)
+    {
+
         return services;
     }
 }
