@@ -5,5 +5,5 @@ public interface IEventStore
 {
     Task SaveEventAsync(Guid aggregateId, int expectedVersion, params EventBase[] events);
     Task<List<EventBase>> GetEventsAsync(Guid aggregateId);
-
+    Task<List<Guid>> GetAggregateIdsAsync();
 }

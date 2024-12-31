@@ -18,6 +18,11 @@ internal sealed class EventStoreRepository : IEventStoreRepository
         _eventStoreCollection = mongoDatabase.GetCollection<EventModel>(options.Value.CollectionName);
     }
 
+    public async Task<List<EventModel>> FinAllAsync()
+    {
+       return await _eventStoreCollection.Find(_=>true).ToListAsync().ConfigureAwait(false);
+    }
+
     public async Task<List<EventModel>> GetByAggregateIdAsync(Guid aggregateId)
     {
         return await _eventStoreCollection.Find(e => e.AggregateIdentifier == aggregateId).ToListAsync().ConfigureAwait(false);

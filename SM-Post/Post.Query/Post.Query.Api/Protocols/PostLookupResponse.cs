@@ -3,7 +3,7 @@ using Post.Query.Domain.Entities;
 
 namespace Post.Query.Api.Protocols;
 
-public class PostLookupResponse : ResponseBase
+public record PostLookupResponse : ResponseBase
 {
     public List<PostEntity> Posts { get; set; }
 }

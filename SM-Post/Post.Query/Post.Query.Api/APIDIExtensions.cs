@@ -9,11 +9,11 @@ public static class APIDIExtensions
 {
     public static IServiceCollection AddApiDI(this IServiceCollection services)
     {
+        
         services
             .SetupHandlers()
             .AddControllers();
 
-        services.AddScoped<IQueryHandler, QueryHandler>();
 
         services.AddOpenApi();
 
@@ -22,6 +22,7 @@ public static class APIDIExtensions
 
     private static IServiceCollection SetupHandlers(this IServiceCollection services)
     {
+        services.AddScoped<IQueryHandler, QueryHandler>();
         var queryHandler = services.BuildServiceProvider().GetService<IQueryHandler>();
         var discpacher = new QueryDispacher();
 

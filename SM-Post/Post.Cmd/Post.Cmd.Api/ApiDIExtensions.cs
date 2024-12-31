@@ -53,6 +53,7 @@ internal static class ApiDIExtensions
         dispatcher.RegisterHandler<UpdateCommentCommand>(commandHandler.HandleAsync);
         dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandleAsync);
 
+        dispatcher.RegisterHandler<RestoreDbCommand>(commandHandler.HandleAsync);
         services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
         return services;
     }

@@ -67,4 +67,9 @@ public sealed class CommandHandler(IEventSourcingHandler<PostAggregate> eventSou
 
         await eventSourcing.SaveAsync(aggregate);
     }
+
+    public async Task HandleAsync(RestoreDbCommand command)
+    {
+        await eventSourcing.RepublishEventsAsync();
+    }
 }

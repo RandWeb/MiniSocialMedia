@@ -10,6 +10,16 @@ internal sealed class EventStore(
     IEventStoreRepository eventStoreRepository,
     IEventProducer producer) : IEventStore
 {
+    public async Task<List<Guid>> GetAggregateIdsAsync()
+    {
+        var eventStream = await eventStoreRepository.FinAllAsync();
+        if (eventStream is [] or null) throw new ArgumentNullException(nameof(eventStream), "Could not event stream from event store");
+
+        return eventStream.Select(e => e.AggregateIdentifier)
+          .Distinct()
+          .ToList();
+    }
+
     public async Task<List<EventBase>> GetEventsAsync(Guid aggregateId)
     {
         var eventStream = await eventStoreRepository.GetByAggregateIdAsync(aggregateId);

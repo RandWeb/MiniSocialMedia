@@ -38,7 +38,17 @@ public static class InfrastrcutureExtension
         Action<DbContextOptionsBuilder> optionsDbContext = (options =>
         {
             options.UseLazyLoadingProxies();
-            options.UseSqlServer(configuration.GetConnectionString("cns"));
+
+            var dbProvider = Environment.GetEnvironmentVariable("DATABASE_PROVIDER") ?? string.Empty;
+
+            if (dbProvider.Equals("Postgres"))
+            {
+                options.UseNpgsql(configuration.GetConnectionString("Postgres"));
+            }
+            else
+            {
+                options.UseSqlServer(configuration.GetConnectionString("SqlServer"));
+            }
         });
 
         services.AddDbContext<DatabaseContext>(optionsDbContext);
